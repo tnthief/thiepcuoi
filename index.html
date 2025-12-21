@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thiệp Cưới - Linh & Hạnh</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=EB+Garamond:wght@400;500;600&family=Poppins:wght@300;400;500&family=Dancing+Script:wght@600;700&family=Great+Vibes&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            overflow-x: hidden;
+            font-family: 'Poppins', sans-serif;
+            color: #8B0000;
+            background: #FFF9F0;
+            scroll-behavior: smooth;
+            position: relative;
+            min-height: 100vh;
+            touch-action: pan-y;
+        }
+
+        /* Nền chính với hiệu ứng vàng đỏ */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(255, 215, 0, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(255, 69, 0, 0.12) 0%, transparent 40%),
+                linear-gradient(135deg, #FFF9F0 0%, #FFF5E6 30%, #FFF0D9 100%);
+            z-index: -3;
+        }
+
+        /* Hoa văn nền lạc hồng */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M40 10 C50 5, 70 10, 75 25 C80 40, 70 55, 40 70 C10 55, 0 40, 5 25 C10 10, 30 5, 40 10' fill='%23FFD700' fill-opacity='0.05'/%3E%3C/svg%3E"),
+                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5 C35 2, 50 5, 55 15 C60 25, 50 35, 30 45 C10 35, 0 25, 5 15 C10 5, 25 2, 30 5' fill='%23DC143C' fill-opacity='0.04'/%3E%3C/svg%3E");
+            background-size: 100px 100px, 80px 80px;
+            background-position: center;
+            z-index: -2;
+            opacity: 0.6;
+        }
+
+        /* Hoa rơi */
+        .falling-flowers {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .flower {
+            position: absolute;
+            font-size: 24px;
+            color: #FF69B4;
+            opacity: 0.7;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        /* Biểu tượng cưới chạy khắp màn hình */
+        .wedding-icons {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .wedding-icon {
+            position: absolute;
+            font-size: 32px;
+            opacity: 0.4;
+            animation: float linear infinite;
+        }
+
+        .groom-icon {
+            color: #1E90FF;
+        }
+
+        .bride-icon {
+            color: #FF69B4;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(20px, 20px) rotate(90deg);
+            }
+            50% {
+                transform: translate(0, 40px) rotate(180deg);
+            }
+            75% {
+                transform: translate(-20px, 20px) rotate(270deg);
+            }
+        }
+
+        /* Phần hiệu ứng cánh cửa mở với nhiều hoa văn họa tiết */
+        .door-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: 1000;
+            pointer-events: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .door {
+            position: absolute;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            transition: transform 2s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: 
+                0 0 60px rgba(220, 20, 60, 0.4),
+                inset 0 0 50px rgba(255, 215, 0, 0.3);
+        }
+
+        /* Cánh cửa đỏ vàng với nhiều hoa văn họa tiết phong phú */
+        .door-left {
+            left: 0;
+            transform-origin: left center;
+            background: 
+                /* Màu nền chính */
+                linear-gradient(135deg, #DC143C 0%, #B22222 100%),
+                
+                /* Họa tiết hoa văn dày đặc */
+                repeating-linear-gradient(45deg, 
+                    transparent, 
+                    transparent 15px, 
+                    rgba(255, 215, 0, 0.15) 15px, 
+                    rgba(255, 215, 0, 0.15) 30px,
+                    transparent 30px,
+                    transparent 45px,
+                    rgba(255, 69, 0, 0.1) 45px,
+                    rgba(255, 69, 0, 0.1) 60px),
+                
+                /* Họa tiết kim tuyến */
+                radial-gradient(circle at 30% 40%, rgba(255, 215, 0, 0.2) 2px, transparent 3px),
+                radial-gradient(circle at 70% 60%, rgba(255, 215, 0, 0.2) 2px, transparent 3px),
+                radial-gradient(circle at 50% 80%, rgba(255, 215, 0, 0.2) 2px, transparent 3px),
+                
+                /* Họa tiết hoa văn truyền thống */
+                url("data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M100 40 C120 20, 180 40, 180 80 C180 120, 120 140, 100 120 C80 140, 20 120, 20 80 C20 40, 80 20, 100 40' fill='%23FFD700' fill-opacity='0.08'/%3E%3Cpath d='M60 60 Q80 30, 100 60 T140 60' stroke='%23FFD700' stroke-width='1.5' fill='none' opacity='0.15'/%3E%3Ccircle cx='100' cy='100' r='30' stroke='%23FFD700' stroke-width='1' fill='none' opacity='0.1'/%3E%3Cpath d='M100 160 C80 140, 120 120, 100 100' stroke='%23FFD700' stroke-width='1' fill='none' opacity='0.15'/%3E%3C/svg%3E"),
+                
+                /* Họa tiết vân mây */
+                url("data:image/svg+xml,%3Csvg width='300' height='300' viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 100 C70 80, 130 100, 150 80 C170 100, 230 80, 250 100' stroke='%23FFD700' stroke-width='0.5' fill='none' opacity='0.08'/%3E%3Cpath d='M80 180 C100 160, 160 180, 180 160 C200 180, 260 160, 280 180' stroke='%23FFD700' stroke-width='0.5' fill='none' opacity='0.08'/%3E%3C/svg%3E");
+            
+            background-size: auto, auto, 20px 20px, 20px 20px, 20px 20px, 150px 150px, 200px 200px;
+            background-position: center;
+            border-right: 4px solid #FFD700;
+        }
+
+        .door-right {
+            right: 0;
+            transform-origin: right center;
+            background: 
+                /* Màu nền chính */
+                linear-gradient(135deg, #B22222 0%, #8B0000 100%),
+                
+                /* Họa tiết hoa văn dày đặc */
+                repeating-linear-gradient(-45deg, 
+                    transparent, 
+                    transparent 15px, 
+                    rgba(255, 215, 0, 0.15) 15px, 
+                    rgba(255, 215, 0, 0.15) 30px,
+                    transparent 30px,
+                    transparent 45px,
+                    rgba(255, 69, 0, 0.1) 45px,
+                    rgba(255, 69, 0, 0.1) 60px),
+                
+                /* Họa tiết kim tuyến */
+                radial-gradient(circle at 70% 40%, rgba(255, 215, 0, 0.2) 2px, transparent 3px),
+                radial-gradient(circle at 30% 60%, rgba(255, 215, 0, 0.2) 2px, transparent 3px),
+                radial-gradient(circle at 50% 20%, rgba(255, 215, 0, 0.2) 2px, transparent 3px),
+                
+                /* Họa tiết hoa văn truyền thống */
+                url("data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M100 40 C80 20, 20 40, 20 80 C20 120, 80 140, 100 120 C120 140, 180 120, 180 80 C180 40, 120 20, 100 40' fill='%23FFD700' fill-opacity='0.08'/%3E%3Cpath d='M140 60 Q120 30, 100 60 T60 60' stroke='%23FFD700' stroke-width='1.5' fill='none' opacity='0.15'/%3E%3Ccircle cx='100' cy='100' r='30' stroke='%23FFD700' stroke-width='1' fill='none' opacity='0.1'/%3E%3Cpath d='M100 160 C120 140, 80 120, 100 100' stroke='%23FFD700' stroke-width='1' fill='none' opacity='0.15'/%3E%3C/svg%3E"),
+                
+                /* Họa tiết vân mây */
+                url("data:image/svg+xml,%3Csvg width='300' height='300' viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M250 100 C230 80, 170 100, 150 80 C130 100, 70 80, 50 100' stroke='%23FFD700' stroke-width='0.5' fill='none' opacity='0.08'/%3E%3Cpath d='M220 180 C200 160, 140 180, 120 160 C100 180, 40 160, 20 180' stroke='%23FFD700' stroke-width='0.5' fill='none' opacity='0.08'/%3E%3C/svg%3E");
+            
+            background-size: auto, auto, 20px 20px, 20px 20px, 20px 20px, 150px 150px, 200px 200px;
+            background-position: center;
+            border-left: 4px solid #FFD700;
+        }
+
+        /* Hoa văn hạc tiên */
+        .crane-pattern {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                url("data:image/svg+xml,%3Csvg width='150' height='150' viewBox='0 0 150 150' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M75 30 C85 20, 115 30, 120 50 C125 70, 115 90, 75 110 C35 90, 25 70, 30 50 C35 30, 65 20, 75 30' fill='%23FFD700' fill-opacity='0.1'/%3E%3Cpath d='M75 60 L95 40 L115 60 L95 80 Z' fill='%23FFD700' fill-opacity='0.15'/%3E%3Cpath d='M75 60 L55 40 L35 60 L55 80 Z' fill='%23FFD700' fill-opacity='0.15'/%3E%3C/svg%3E");
+            background-size: 180px 180px;
+            background-position: center;
+            opacity: 0.4;
+            animation: patternFloat 20s infinite linear;
+        }
+
+        @keyframes patternFloat {
+            0% {
+                background-position: center;
+            }
+            100% {
+                background-position: center 180px;
+            }
+        }
+
+        /* Chữ Hỷ vừa phải không che mất chữ Linh Hạnh */
+        .double-happiness {
+            position: absolute;
+            top: 60%; /* Đưa xuống dưới để không che chữ Linh Hạnh */
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Dancing Script', cursive;
+            font-size: 120px; /* Giảm kích thước */
+            color: #FFD700;
+            text-shadow: 
+                0 0 30px rgba(255, 215, 0, 0.8),
+                0 0 60px rgba(255, 215, 0, 0.5);
+            z-index: 5;
+            opacity: 0.8;
+            letter-spacing: -15px;
+            animation: pulse 3s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% {
+                text-shadow: 
+                    0 0 20px rgba(255, 215, 0, 0.7),
+                    0 0 40px rgba(255, 215, 0, 0.4);
+            }
+            100% {
+                text-shadow: 
+                    0 0 40px rgba(255, 215, 0, 0.9),
+                    0 0 80px rgba(255, 215, 0, 0.6);
+            }
+        }
+
+        .double-happiness::before {
+            content: '囍';
+            position: absolute;
+            top: 0;
+            left: 0;
+            color: #FF4500;
+            transform: translate(3px, 3px);
+            z-index: -1;
+            opacity: 0.6;
+        }
+
+        /* Nội dung trên cửa - đưa Linh Hạnh lên cao hơn */
+        .door-content {
+            opacity: 0;
+            transition: opacity 1s ease;
+            text-align: center;
+            padding: 20px;
+            z-index: 10; /* Cao hơn chữ Hỷ */
+            position: relative;
+            top: -80px; /* Đưa lên cao hơn */
+        }
+
+        .door-content h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            letter-spacing: 5px;
+            color: #FFD700;
+            text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.4);
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.4);
+            }
+            to {
+                text-shadow: 
+                    4px 4px 8px rgba(0, 0, 0, 0.4),
+                    0 0 20px rgba(255, 215, 0, 0.6),
+                    0 0 30px rgba(255, 215, 0, 0.4);
+            }
+        }
+
+        .door-content p {
+            font-family: 'EB Garamond', serif;
+            font-size: 1.4rem;
+            font-style: italic;
+            margin-top: 5px;
+            color: #FFE4B5;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Hoa văn lạc hồng hai bên lề */
+        .side-decoration {
+            position: fixed;
+            top: 0;
+            width: 100px;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            background-size: contain;
+            background-repeat: repeat-y;
+            background-position: center;
+            opacity: 0.6;
+        }
+
+        .left-decoration {
+            left: 0;
+            background-image: 
+                linear-gradient(to right, rgba(255, 249, 240, 0.9), transparent),
+                url("data:image/svg+xml,%3Csvg width='60' height='150' viewBox='0 0 60 150' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30,20 C15,40 45,60 30,85 C15,110 45,130 30,150' stroke='%23DC143C' stroke-width='1.2' fill='none' stroke-opacity='0.4'/%3E%3Ccircle cx='30' cy='25' r='3' fill='%23DC143C' fill-opacity='0.3'/%3E%3Ccircle cx='20' cy='60' r='2.5' fill='%23FFD700' fill-opacity='0.3'/%3E%3Ccircle cx='40' cy='95' r='3.5' fill='%23DC143C' fill-opacity='0.3'/%3E%3Ccircle cx='25' cy='120' r='2.5' fill='%23FFD700' fill-opacity='0.3'/%3E%3C/svg%3E");
+        }
+
+        .right-decoration {
+            right: 0;
+            background-image: 
+                linear-gradient(to left, rgba(255, 249, 240, 0.9), transparent),
+                url("data:image/svg+xml,%3Csvg width='60' height='150' viewBox='0 0 60 150' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30,20 C45,40 15,60 30,85 C45,110 15,130 30,150' stroke='%23DC143C' stroke-width='1.2' fill='none' stroke-opacity='0.4'/%3E%3Ccircle cx='30' cy='25' r='3' fill='%23DC143C' fill-opacity='0.3'/%3E%3Ccircle cx='40' cy='60' r='2.5' fill='%23FFD700' fill-opacity='0.3'/%3E%3Ccircle cx='20' cy='95' r='3.5' fill='%23DC143C' fill-opacity='0.3'/%3E%3Ccircle cx='35' cy='120' r='2.5' fill='%23FFD700' fill-opacity='0.3'/%3E%3C/svg%3E");
+        }
+
+        /* Nội dung chính - tối ưu cho mobile */
+        .main-content {
+            opacity: 0;
+            transition: opacity 1.5s ease;
+            padding: 20px 15px;
+            max-width: 100%;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .show-content {
+            opacity: 1;
+        }
+
+        /* Phần thiệp chính */
+        .wedding-title {
+            margin: 40px 0 30px;
+            padding: 0 10px;
+        }
+
+        .title {
+            font-family: 'EB Garamond', serif;
+            font-size: 16px;
+            letter-spacing: 6px;
+            color: #B22222;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .couple-names {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 30px 0;
+        }
+
+        .name {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            font-weight: 700;
+            color: #8B0000;
+            transition: all 0.3s ease;
+            cursor: default;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+            padding: 10px 20px;
+            margin: 10px 0;
+        }
+
+        .and {
+            font-family: 'Dancing Script', cursive;
+            font-size: 30px;
+            margin: 10px 0;
+            color: #FFD700;
+            font-weight: 700;
+        }
+
+        .divider {
+            width: 160px;
+            height: 3px;
+            background: linear-gradient(to right, transparent, #DC143C, #FFD700, #DC143C, transparent);
+            margin: 30px auto;
+            position: relative;
+            border-radius: 3px;
+        }
+
+        .divider::before, .divider::after {
+            content: '❀';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #FFD700;
+            font-size: 18px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .divider::before {
+            left: -25px;
+        }
+
+        .divider::after {
+            right: -25px;
+        }
+
+        .invitation-text {
+            font-family: 'EB Garamond', serif;
+            font-size: 18px;
+            line-height: 1.6;
+            color: #8B0000;
+            font-style: italic;
+            margin: 0 auto 40px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
+            padding: 0 15px;
+        }
+
+        /* PHẦN MỚI: Container chung cho cả hai nhà */
+        .family-section {
+            margin: 50px 0;
+            position: relative;
+        }
+
+        .family-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            text-align: center;
+            color: #8B0000;
+            margin-bottom: 40px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .family-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(to right, #FFD700, #DC143C, #FFD700);
+            border-radius: 3px;
+        }
+
+        /* Container chung cho hai nhà */
+        .family-container-unified {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            background: linear-gradient(135deg, rgba(255, 250, 245, 0.9), rgba(255, 245, 240, 0.9));
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(220, 20, 60, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Hiệu ứng viền cho container */
+        .family-container-unified::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(to right, #1E90FF, #FF69B4);
+            border-radius: 20px 20px 0 0;
+        }
+
+        /* Layout cho hai nhà trong cùng container */
+        .family-unified {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			column-gap: 14px;
+		}
+
+
+
+        /* Trên desktop: hai nhà ngang nhau */
+        @media (min-width: 768px) {
+            .family-unified {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: stretch;
+            }
+        }
+
+        /* Mỗi nhà trong container */
+		.family-unified-side {
+			display: grid;
+			grid-template-rows:
+				auto    /* tiêu đề */
+				auto    /* Ông Bà */
+				auto    /* tên 1 */
+				auto    /* tên 2 */
+				1fr     /* đệm */
+				auto;   /* địa chỉ */
+
+			align-items: center;
+			text-align: center;
+		}
+
+
+
+        /* Nhà trai bên trái */
+        .family-unified-side:first-child {
+            border-right: 2px dashed rgba(30, 144, 255, 0.3);
+        }
+
+        /* Nhà gái bên phải */
+        .family-unified-side:last-child {
+            border-left: 2px dashed rgba(255, 105, 180, 0.3);
+        }
+
+        /* Trên mobile: không có đường phân cách */
+        @media (max-width: 767px) {
+            .family-unified-side:first-child,
+            .family-unified-side:last-child {
+                border: none;
+                border-bottom: 2px dashed rgba(220, 20, 60, 0.2);
+                padding-bottom: 30px;
+            }
+            
+            .family-unified-side:last-child {
+                border-bottom: none;
+                padding-bottom: 0;
+            }
+        }
+
+        .family-unified-side::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.05), rgba(220, 20, 60, 0.05));
+            border-radius: 15px;
+            z-index: -1;
+        }
+
+        .family-unified-side:hover {
+            transform: translateY(-5px);
+        }
+
+        .side-title-unified {
+			grid-row: 1;
+		}
+
+		.parent-mm-unified,
+		.parent-mm2-unified {
+			grid-row: 2;
+		}
+		.parent-name-unified:nth-of-type(1) {
+			grid-row: 3;
+		}
+		.parent-name-unified:nth-of-type(2) {
+			grid-row: 4;
+		}
+
+        /* Màu tiêu đề khác nhau cho hai nhà */
+        .family-unified-side:first-child .side-title-unified {
+            color: #1E90FF; /* Xanh cho nhà trai */
+            border-bottom: 2px solid rgba(30, 144, 255, 0.4);
+        }
+
+        .family-unified-side:last-child .side-title-unified {
+            color: #FF69B4; /* Hồng cho nhà gái */
+            border-bottom: 2px solid rgba(255, 105, 180, 0.4);
+        }
+
+		.parent-info-unified {
+			width: 100%;
+			min-height: 120px;   /* ✅ ép 2 bên cao bằng nhau */
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+		}
+
+
+        .parent-name-unified {
+			position: relative;
+			padding-left: 14px;     /* chừa chỗ cho bullet */
+			white-space: nowrap;
+		}
+
+		.parent-name-unified::before {
+			content: '•';
+			position: absolute;
+			left: 0;
+			top: 50%;
+			transform: translateY(-50%);
+			color: #FFD700;
+		}
+
+
+        .parent-role-unified {
+            font-size: 16px;
+            color: #8B0000;
+            font-style: italic;
+            margin-bottom: 5px;
+            opacity: 0.8;
+        }
+
+        .address-unified {
+			grid-row: 6;
+
+			display: flex;
+			align-items: center;        /* ✅ căn giữa theo chiều dọc */
+			justify-content: center;
+
+			gap: 6px;
+
+			min-height: 96px;           /* 🔥 KHÓA chiều cao – mấu chốt */
+			padding: 12px 6px;
+
+			border-top: 1px dashed rgba(220,20,60,.3);
+
+			font-size: 14px;
+			line-height: 1.5;
+			text-align: center;
+		}
+
+
+
+
+		.address-unified span {
+			display: block;
+			max-width: 100%;
+
+			white-space: normal;
+			word-break: break-word;
+
+			text-align: center;
+		}
+
+
+		.address-unified i {
+			flex-shrink: 0;
+			margin-top: 2px;
+			color: #FFD700;
+			font-size: 15px;
+		}
+
+
+		.family-container-unified {
+			padding: clamp(20px, 4vw, 32px);
+		}
+
+
+        /* Phần tên cặp đôi ở giữa - trong cùng container */
+        .couple-between-unified {
+            margin: 40px 0 20px;
+            padding: 25px 15px;
+            position: relative;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.08), rgba(220, 20, 60, 0.08));
+            border-radius: 15px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .couple-between-title-unified {
+            font-family: 'EB Garamond', serif;
+            font-size: 20px;
+            color: #8B0000;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .couple-names-between-unified {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .couple-name-unified {
+            font-family: 'Dancing Script', cursive;
+            font-size: 34px;
+            color: #DC143C;
+            position: relative;
+            padding: 8px 15px;
+        }
+
+        .couple-name-unified::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 8px;
+            z-index: -1;
+        }
+
+        .couple-and-unified {
+            font-family: 'Dancing Script', cursive;
+            font-size: 30px;
+            color: #FFD700;
+            font-weight: 700;
+        }
+
+        /* Phần thời gian tổ chức */
+        .event-section {
+            margin: 60px 0 40px;
+            padding: 30px 15px;
+            position: relative;
+        }
+
+        .event-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 26px;
+            text-align: center;
+            color: #8B0000;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .event-title::after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 3px;
+            background: linear-gradient(to right, #FFD700, #DC143C);
+            border-radius: 3px;
+        }
+
+        .event-details {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            margin-top: 30px;
+            max-width: 100%;
+        }
+
+        .event-item {
+            padding: 25px 20px;
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+            border-radius: 12px;
+        }
+
+        .event-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(220, 20, 60, 0.1));
+            border-radius: 12px;
+            z-index: -1;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .event-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(220, 20, 60, 0.15);
+        }
+
+        .event-icon {
+            font-size: 36px;
+            margin-bottom: 15px;
+            color: #FFD700;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+
+        .event-item h3 {
+            font-family: 'EB Garamond', serif;
+            font-size: 22px;
+            color: #8B0000;
+            margin-bottom: 12px;
+        }
+
+        .event-item p {
+            font-size: 16px;
+            color: #B22222;
+            line-height: 1.5;
+            margin: 6px 0;
+        }
+
+        .event-item .time {
+            font-weight: 600;
+            color: #DC143C;
+            font-size: 18px;
+            margin-top: 8px;
+        }
+
+        /* Nút cuộn xuống */
+        .scroll-down {
+            text-align: center;
+            margin: 40px 0;
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-down i {
+            font-size: 32px;
+            color: #DC143C;
+            cursor: pointer;
+            background: rgba(255, 215, 0, 0.2);
+            border-radius: 50%;
+            padding: 12px;
+            box-shadow: 0 5px 15px rgba(220, 20, 60, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .scroll-down i:hover {
+            background: rgba(255, 215, 0, 0.3);
+            transform: scale(1.1);
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-12px);
+            }
+            60% {
+                transform: translateY(-6px);
+            }
+        }
+
+        /* Nút hành động */
+        .action-btn {
+            display: inline-block;
+            padding: 16px 32px;
+            background: linear-gradient(135deg, #DC143C, #B22222);
+            color: #FFD700;
+            text-decoration: none;
+            border-radius: 50px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(220, 20, 60, 0.3);
+            border: 2px solid #FFD700;
+            margin-top: 30px;
+            letter-spacing: 1px;
+        }
+
+        .action-btn:hover {
+            background: linear-gradient(135deg, #B22222, #8B0000);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(220, 20, 60, 0.4);
+            color: #FFF;
+        }
+
+        /* Hiệu ứng xuất hiện khi scroll */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.appear {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Footer */
+        .footer-text {
+            text-align: center;
+            margin: 50px 0 30px;
+            padding: 25px 15px;
+            border-top: 1px solid rgba(220, 20, 60, 0.2);
+        }
+
+        .footer-text p {
+            font-family: 'EB Garamond', serif;
+            font-size: 18px;
+            color: #8B0000;
+            font-style: italic;
+            line-height: 1.5;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        /* Hiệu ứng mở cửa */
+        .door-open .door-left {
+            transform: perspective(1500px) rotateY(-110deg);
+        }
+
+        .door-open .door-right {
+            transform: perspective(1500px) rotateY(110deg);
+        }
+
+        .door-open .door-content {
+            opacity: 1;
+        }
+
+        /* Responsive cho tablet và desktop */
+        @media (min-width: 768px) {
+            .main-content {
+                padding: 40px 30px;
+                max-width: 800px;
+                margin: 0 auto;
+            }
+
+            .couple-names {
+                flex-direction: row;
+                margin: 40px 0;
+            }
+
+            .name {
+                font-size: 42px;
+                padding: 0 30px;
+                margin: 0;
+            }
+
+            .and {
+                margin: 0 30px;
+            }
+
+            .event-details {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .event-item {
+                flex: 1;
+                min-width: 250px;
+                max-width: 300px;
+            }
+
+            .side-decoration {
+                width: 120px;
+            }
+            
+            .double-happiness {
+                font-size: 140px;
+                top: 65%;
+            }
+            
+            .door-content {
+                top: -100px;
+            }
+            
+            .family-container-unified {
+                padding: 40px 30px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .main-content {
+                max-width: 1000px;
+            }
+            
+            .name {
+                font-size: 48px;
+            }
+            
+            .double-happiness {
+                font-size: 160px;
+                top: 70%;
+            }
+            
+            .door-content {
+                top: -120px;
+            }
+            
+            .family-container-unified {
+                max-width: 900px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hoa rơi -->
+    <div class="falling-flowers" id="fallingFlowers"></div>
+    
+    <!-- Biểu tượng cưới chạy khắp màn hình -->
+    <div class="wedding-icons" id="weddingIcons"></div>
+
+    <!-- Hoa văn lạc hồng hai bên lề -->
+    <div class="side-decoration left-decoration"></div>
+    <div class="side-decoration right-decoration"></div>
+
+    <!-- Hiệu ứng cánh cửa mở với chữ Hỷ -->
+    <div class="door-container" id="doorContainer">
+        <div class="double-happiness">囍</div>
+        <div class="door door-left">
+            <div class="crane-pattern"></div>
+            <div class="door-content">
+                <h2>Linh</h2>
+                <p>Chú Rể</p>
+            </div>
+        </div>
+        <div class="door door-right">
+            <div class="crane-pattern"></div>
+            <div class="door-content">
+                <h2>Hạnh</h2>
+                <p>Cô Dâu</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Nội dung chính -->
+    <div class="main-content" id="mainContent">
+        <!-- Thiệp cưới chính -->
+        <div class="wedding-title fade-in appear">
+            <div class="title">Thiệp Mời Thành Hôn</div>
+            
+            <div class="couple-names">
+                <div class="name">Linh</div>
+                <div class="and">&</div>
+                <div class="name">Hạnh</div>
+            </div>
+            
+            <div class="divider"></div>
+            
+            <p class="invitation-text">
+                "Trong niềm hạnh phúc tràn đầy, chúng tôi cùng gia đình trân trọng kính mời Quý khách đến dự lễ thành hôn của chúng tôi, cùng chia sẻ những giây phút đáng nhớ trong ngày trọng đại này."
+            </p>
+        </div>
+
+        <div class="scroll-down">
+            <i class="fas fa-chevron-down" onclick="scrollToSection('familySection')"></i>
+        </div>
+
+        <!-- PHẦN MỚI: Hai nhà trong cùng container -->
+        <div class="family-section fade-in" id="familySection">
+            <h2 class="family-title">Hai Nhà Trai Gái</h2>
+            
+            <div class="family-container-unified">
+                <div class="family-unified">
+                    <!-- Nhà trai bên trái -->
+                    <div class="family-unified-side">
+                        <h3 class="side-title-unified">Nhà Trai</h3>
+                        <div class="parent-info-unified">
+						    <div class="parent-mm-unified">Ông Bà</div>
+                            <div class="parent-name-unified">Lê Văn Sơn</div>
+                            <div class="parent-name-unified">Nguyễn Thị Hương</div>
+                            
+                        </div>
+                        <div class="address-unified">
+                            <i class="fas fa-home"></i>
+                            <span>TDP 13 Nhân mỹ, Mỹ Đình, Từ Liêm, Hà Nội</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Nhà gái bên phải -->
+                    <div class="family-unified-side">
+                        <h3 class="side-title-unified">Nhà Gái</h3>
+                        <div class="parent-info-unified">
+							<div class="parent-mm2-unified">Ông Bà</div>
+                            <div class="parent-name-unified">Nguyễn Sỹ Hữu</div>
+                            <div class="parent-name-unified">Phạm Thị Thuỷ</div>
+                        </div>
+                        <div class="address-unified">
+                            <i class="fas fa-home"></i>
+                            <span>Thôn 1, Phù Lưu Tế, Mỹ Đức, Hà Nội</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tên cô dâu chú rể ở giữa - trong cùng container -->
+                <div class="couple-between-unified">
+                    <div class="couple-between-title-unified">Chú Rể & Cô Dâu</div>
+                    <div class="couple-names-between-unified">
+                        <div class="couple-name-unified">Linh</div>
+                        <div class="couple-and-unified">&</div>
+                        <div class="couple-name-unified">Hạnh</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="scroll-down">
+                <i class="fas fa-chevron-down" onclick="scrollToSection('eventSection')"></i>
+            </div>
+        </div>
+
+        <!-- Phần thời gian tổ chức -->
+        <div class="event-section fade-in" id="eventSection">
+            <h2 class="event-title">Thời Gian Tổ Chức</h2>
+            
+            <div class="event-details">
+                <div class="event-item">
+                    <div class="event-icon">💒</div>
+                    <h3>Lễ Thành Hôn</h3>
+                    <p>Chủ Nhật, ngày 28 tháng 12 năm 2025</p>
+                    <p class="time">8:00</p>
+                    <p>Tại tư gia nhà gái</p>
+                </div>
+                
+                <div class="event-item">
+                    <div class="event-icon">🎉</div>
+                    <h3>Tiệc Cưới</h3>
+                    <p>Thứ Ba, ngày 30 tháng 12 năm 2025</p>
+                    <p class="time">14:00</p>
+                    <p>Tại tư gia nhà gái</p>
+                </div>
+            
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="https://maps.google.com/?q=Nhà+hàng+ABC,+Quận+1,+TP.Hồ+Chí+Minh" target="_blank" class="action-btn">
+                    <i class="fas fa-map-marked-alt"></i> Xem Bản Đồ Chỉ Đường
+                </a>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer-text">
+            <p>"Sự hiện diện của Quý khách là niềm vinh hạnh lớn lao đối với hai gia đình chúng tôi"</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tạo hoa rơi
+            function createFallingFlowers() {
+                const container = document.getElementById('fallingFlowers');
+                const flowers = ['❀', '❁', '✿', '🌸', '💮', '🏵️'];
+                
+                for (let i = 0; i < 12; i++) {
+                    const flower = document.createElement('div');
+                    flower.className = 'flower';
+                    flower.innerHTML = flowers[Math.floor(Math.random() * flowers.length)];
+                    
+                    // Vị trí ngẫu nhiên
+                    flower.style.left = Math.random() * 100 + 'vw';
+                    flower.style.fontSize = (Math.random() * 20 + 16) + 'px';
+                    flower.style.color = `hsl(${Math.random() * 60 + 320}, 70%, 65%)`;
+                    
+                    // Tốc độ rơi ngẫu nhiên
+                    const duration = Math.random() * 10 + 10;
+                    flower.style.animationDuration = `${duration}s`;
+                    flower.style.animationDelay = Math.random() * 5 + 's';
+                    
+                    container.appendChild(flower);
+                }
+            }
+
+            // Tạo biểu tượng cưới chạy khắp màn hình
+            function createWeddingIcons() {
+                const container = document.getElementById('weddingIcons');
+                const icons = [
+                    { class: 'groom-icon', symbol: '👨‍❤️‍👨' },
+                    { class: 'bride-icon', symbol: '👩‍❤️‍👩' },
+                    { class: 'groom-icon', symbol: '🤵' },
+                    { class: 'bride-icon', symbol: '👰' },
+                    { class: 'groom-icon', symbol: '💑' },
+                    { class: 'bride-icon', symbol: '❤️' },
+                    { class: 'groom-icon', symbol: '💍' },
+                    { class: 'bride-icon', symbol: '💒' }
+                ];
+                
+                for (let i = 0; i < 10; i++) {
+                    const icon = document.createElement('div');
+                    const iconType = icons[Math.floor(Math.random() * icons.length)];
+                    
+                    icon.className = `wedding-icon ${iconType.class}`;
+                    icon.innerHTML = iconType.symbol;
+                    
+                    // Vị trí ngẫu nhiên
+                    icon.style.left = Math.random() * 100 + 'vw';
+                    icon.style.top = Math.random() * 100 + 'vh';
+                    icon.style.fontSize = (Math.random() * 20 + 24) + 'px';
+                    icon.style.opacity = Math.random() * 0.3 + 0.1;
+                    
+                    // Tốc độ di chuyển ngẫu nhiên
+                    const duration = Math.random() * 20 + 20;
+                    icon.style.animationDuration = `${duration}s`;
+                    icon.style.animationDelay = Math.random() * 5 + 's';
+                    
+                    container.appendChild(icon);
+                }
+            }
+
+            // Hiệu ứng mở cửa khi trang tải
+            setTimeout(() => {
+                document.getElementById('doorContainer').classList.add('door-open');
+                
+                // Hiển thị nội dung chính sau khi cửa mở
+                setTimeout(() => {
+                    document.getElementById('mainContent').classList.add('show-content');
+                    
+                    // Tạo hiệu ứng hoa và biểu tượng
+                    createFallingFlowers();
+                    createWeddingIcons();
+                    
+                    // Ẩn cửa sau khi hiển thị nội dung
+                    setTimeout(() => {
+                        document.getElementById('doorContainer').style.display = 'none';
+                    }, 1000);
+                }, 2000);
+            }, 500);
+
+            // Hiệu ứng xuất hiện khi scroll
+            const fadeElements = document.querySelectorAll('.fade-in');
+            
+            const appearOnScroll = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('appear');
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            fadeElements.forEach(element => {
+                appearOnScroll.observe(element);
+            });
+
+            // Hàm cuộn đến phần tử
+            window.scrollToSection = function(sectionId) {
+                const element = document.getElementById(sectionId);
+                if (element) {
+                    element.scrollIntoView({ 
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            };
+
+            // Hiệu ứng hover cho các phần tử (chỉ trên desktop)
+            if (window.innerWidth >= 768) {
+                const familySides = document.querySelectorAll('.family-unified-side');
+                familySides.forEach(side => {
+                    side.addEventListener('mouseenter', function() {
+                        this.style.transform = 'translateY(-8px)';
+                    });
+                    
+                    side.addEventListener('mouseleave', function() {
+                        this.style.transform = 'translateY(0)';
+                    });
+                });
+
+                const eventItems = document.querySelectorAll('.event-item');
+                eventItems.forEach(item => {
+                    item.addEventListener('mouseenter', function() {
+                        this.style.transform = 'translateY(-8px)';
+                    });
+                    
+                    item.addEventListener('mouseleave', function() {
+                        this.style.transform = 'translateY(0)';
+                    });
+                });
+
+                const names = document.querySelectorAll('.name');
+                names.forEach(name => {
+                    name.addEventListener('mouseenter', function() {
+                        this.style.color = '#DC143C';
+                        this.style.textShadow = '0 0 15px rgba(255, 215, 0, 0.5)';
+                    });
+                    
+                    name.addEventListener('mouseleave', function() {
+                        this.style.color = '#8B0000';
+                        this.style.textShadow = '2px 2px 4px rgba(0, 0, 0, 0.1)';
+                    });
+                });
+            }
+
+            // Thêm hiệu ứng cho nút cuộn trên mobile
+            const scrollDownButtons = document.querySelectorAll('.scroll-down i');
+            scrollDownButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.9)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                    }, 200);
+                });
+                
+                button.addEventListener('touchstart', function() {
+                    this.style.transform = 'scale(0.9)';
+                });
+                
+                button.addEventListener('touchend', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            });
+
+            // Tối ưu cho touch devices
+            document.body.addEventListener('touchstart', function() {}, {passive: true});
+        });
+
+        // Tối ưu hiệu suất trên mobile
+        window.addEventListener('load', function() {
+            // Giảm số lượng hiệu ứng trên mobile
+            if (window.innerWidth < 768) {
+                const flowers = document.querySelectorAll('.flower');
+                const icons = document.querySelectorAll('.wedding-icon');
+                
+                // Giảm số lượng hoa và biểu tượng trên mobile
+                for (let i = 8; i < flowers.length; i++) {
+                    flowers[i].style.display = 'none';
+                }
+                
+                for (let i = 6; i < icons.length; i++) {
+                    icons[i].style.display = 'none';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
