@@ -64,7 +64,7 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: -1;
+            z-index: 3;
         }
 
         .flower {
@@ -509,13 +509,10 @@
 
         /* Layout cho hai nhà trong cùng container */
         .family-unified {
-			display: flex;
-			flex-direction: row;      /* LUÔN ngang, kể cả mobile */
-			justify-content: space-between;
-			align-items: stretch;
-			gap: 15px;                /* Giảm gap cho vừa mobile */
-		}
-
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
 
         /* Trên desktop: hai nhà ngang nhau */
         @media (min-width: 768px) {
@@ -591,12 +588,12 @@
 
         /* Màu tiêu đề khác nhau cho hai nhà */
         .family-unified-side:first-child .side-title-unified {
-            color: #1E90FF; /* Xanh cho nhà trai */
+            color: #FF69B4; /* Xanh cho nhà trai */
             border-bottom: 2px solid rgba(30, 144, 255, 0.4);
         }
 
         .family-unified-side:last-child .side-title-unified {
-            color: #FF69B4; /* Hồng cho nhà gái */
+            color: #1E90FF; /* Hồng cho nhà gái */
             border-bottom: 2px solid rgba(255, 105, 180, 0.4);
         }
 
@@ -610,8 +607,7 @@
             font-size: 20px;
             color: #B22222;
             margin: 12px 0;
-            padding: 12px 0;
-			white-space: nowrap;
+            padding: 8px 0;
             position: relative;
         }
 
@@ -634,12 +630,10 @@
         }
 
         .address-unified {
-			display: flex; 
             margin-top: 20px;
             padding-top: 20px;
             border-top: 1px dashed rgba(220, 20, 60, 0.3);
-			justify-content: center;
-            font-size: 14px;
+            font-size: 15px;
             color: #8B0000;
             line-height: 1.5;
         }
@@ -1034,30 +1028,29 @@
                 <div class="family-unified">
                     <!-- Nhà trai bên trái -->
                     <div class="family-unified-side">
-                        <h3 class="side-title-unified">Nhà Trai</h3>
-                        <div class="parent-info-unified">
-						    <div class="parent-mm-unified">Ông Bà</div>
-                            <div class="parent-name-unified">Lê Văn Sơn</div>
-                            <div class="parent-name-unified">Nguyễn Thị Hương</div>
-                            
-                        </div>
-                        <div class="address-unified">
-                            <i class="fas fa-home"></i>
-                            <span>TDP 13 Nhân mỹ, Mỹ Đình, Từ Liêm, Hà Nội</span>
-                        </div>
-                    </div>
-                    
-                    <!-- Nhà gái bên phải -->
-                    <div class="family-unified-side">
                         <h3 class="side-title-unified">Nhà Gái</h3>
                         <div class="parent-info-unified">
-							<div class="parent-mm2-unified">Ông Bà</div>
+                            <div class="parent-role-unified">Ông Bà</div>
                             <div class="parent-name-unified">Nguyễn Sỹ Hữu</div>
                             <div class="parent-name-unified">Phạm Thị Thuỷ</div>
                         </div>
                         <div class="address-unified">
                             <i class="fas fa-home"></i>
-                            <span>Thôn 1, Phù Lưu Tế, Mỹ Đức, Hà Nội</span>
+                            <p>Thôn 1, Phù Lưu Tế, Mỹ Đức, Hà Nội</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Nhà gái bên phải -->
+                    <div class="family-unified-side">
+                        <h3 class="side-title-unified">Nhà Trai</h3>
+                        <div class="parent-info-unified">
+                            <div class="parent-role-unified">Ông Bà</div>
+                            <div class="parent-name-unified">Lê Văn Sơn</div>
+                            <div class="parent-name-unified">Nguyễn Thị Hương</div>
+                        </div>
+                        <div class="address-unified">
+                            <i class="fas fa-home"></i>
+                            <p>TDP 13 Nhân Mỹ, Mỹ Đình, Nam Từ Liêm, Hà Nội</p>
                         </div>
                     </div>
                 </div>
@@ -1087,20 +1080,20 @@
                     <div class="event-icon">💒</div>
                     <h3>Lễ Thành Hôn</h3>
                     <p>Chủ Nhật, ngày 28 tháng 12 năm 2025</p>
-                    <p class="time">8:00</p>
+                    <p class="time">8:00 AM</p>
                     <p>Tại tư gia nhà gái</p>
                 </div>
                 
                 <div class="event-item">
                     <div class="event-icon">🎉</div>
                     <h3>Tiệc Cưới</h3>
-                    <p>Thứ Ba, ngày 30 tháng 12 năm 2025</p>
+                    <p>Chủ Nhật, ngày 30 tháng 12 năm 2025</p>
                     <p class="time">14:00</p>
-                    <p>Tại tư gia nhà gái</p>
+                    <p>Tại: Minh Dương Place</p>
                 </div>
             
             <div style="text-align: center; margin-top: 40px;">
-                <a href="https://maps.google.com/?q=Nhà+hàng+ABC,+Quận+1,+TP.Hồ+Chí+Minh" target="_blank" class="action-btn">
+                <a href="https://www.google.com/maps/place/Minh+D%C6%B0%C6%A1ng+Palace/data=!4m2!3m1!1s0x0:0x89e7c8392bd57d6c?sa=X&ved=1t:2428&ictx=111" target="_blank" class="action-btn">
                     <i class="fas fa-map-marked-alt"></i> Xem Bản Đồ Chỉ Đường
                 </a>
             </div>
