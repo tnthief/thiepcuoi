@@ -509,11 +509,12 @@
 
         /* Layout cho hai nhà trong cùng container */
         .family-unified {
-			display: grid;
-			grid-template-columns: 1fr 1fr;
-			column-gap: 14px;
+			display: flex;
+			flex-direction: row;      /* LUÔN ngang, kể cả mobile */
+			justify-content: space-between;
+			align-items: stretch;
+			gap: 15px;                /* Giảm gap cho vừa mobile */
 		}
-
 
 
         /* Trên desktop: hai nhà ngang nhau */
@@ -526,21 +527,17 @@
         }
 
         /* Mỗi nhà trong container */
-		.family-unified-side {
-			display: grid;
-			grid-template-rows:
-				auto    /* tiêu đề */
-				auto    /* Ông Bà */
-				auto    /* tên 1 */
-				auto    /* tên 2 */
-				1fr     /* đệm */
-				auto;   /* địa chỉ */
-
-			align-items: center;
-			text-align: center;
-		}
-
-
+        .family-unified-side {
+            flex: 1;
+            padding: 25px 20px;
+            text-align: center;
+            transition: all 0.5s ease;
+            position: relative;
+            min-height: 280px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
 
         /* Nhà trai bên trái */
         .family-unified-side:first-child {
@@ -557,7 +554,7 @@
             .family-unified-side:first-child,
             .family-unified-side:last-child {
                 border: none;
-                border-bottom: none;
+                border-bottom: 2px dashed rgba(220, 20, 60, 0.2);
                 padding-bottom: 30px;
             }
             
@@ -584,21 +581,13 @@
         }
 
         .side-title-unified {
-			grid-row: 1;
-		}
-
-		.parent-mm-unified,
-		.parent-mm2-unified {
-			font-size: 15px;
-			grid-row: 2;
-			opacity: 0.85; 
-		}
-		.parent-name-unified:nth-of-type(1) {
-			grid-row: 3;
-		}
-		.parent-name-unified:nth-of-type(2) {
-			grid-row: 4;
-		}
+            font-family: 'Playfair Display', serif;
+            font-size: 26px;
+            color: #8B0000;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            position: relative;
+        }
 
         /* Màu tiêu đề khác nhau cho hai nhà */
         .family-unified-side:first-child .side-title-unified {
@@ -611,33 +600,30 @@
             border-bottom: 2px solid rgba(255, 105, 180, 0.4);
         }
 
-		.parent-info-unified {
-			width: 100%;
-			min-height: 120px;   /* ✅ ép 2 bên cao bằng nhau */
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			justify-content: center;
-		}
-
+        .parent-info-unified {
+            margin: 20px 0;
+            flex: 1;
+        }
 
         .parent-name-unified {
-			position: relative;
-			padding-left: 14px;     /* chừa chỗ cho bullet */
+            font-family: 'EB Garamond', serif;
+            font-size: 20px;
+            color: #B22222;
+            margin: 12px 0;
+            padding: 12px 0;
 			white-space: nowrap;
-			font-size: 25px;
-			line-height: 1.3;
-		}
+            position: relative;
+        }
 
-		.parent-name-unified::before {
-			content: '•';
-			position: absolute;
-			left: 0;
-			top: 50%;
-			transform: translateY(-50%);
-			color: #FFD700;
-		}
-
+        .parent-name-unified::before {
+            content: '•';
+            position: absolute;
+            left: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #FFD700;
+            font-size: 20px;
+        }
 
         .parent-role-unified {
             font-size: 16px;
@@ -648,50 +634,21 @@
         }
 
         .address-unified {
-			grid-row: 6;
-
-			display: flex;
-			align-items: center;        /* ✅ căn giữa theo chiều dọc */
+			display: flex; 
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px dashed rgba(220, 20, 60, 0.3);
 			justify-content: center;
+            font-size: 14px;
+            color: #8B0000;
+            line-height: 1.5;
+        }
 
-			gap: 6px;
-
-			min-height: 96px;           /* 🔥 KHÓA chiều cao – mấu chốt */
-			padding: 12px 6px;
-
-			border-top: none;
-
-			font-size: 14px;
-			line-height: 1.5;
-			text-align: center;
-		}
-
-
-
-
-		.address-unified span {
-			display: block;
-			max-width: 100%;
-
-			white-space: normal;
-			word-break: break-word;
-
-			text-align: center;
-		}
-
-
-		.address-unified i {
-			flex-shrink: 0;
-			margin-top: 2px;
-			color: #FFD700;
-			font-size: 15px;
-		}
-
-
-		.family-container-unified {
-			padding: clamp(20px, 4vw, 32px);
-		}
-
+        .address-unified i {
+            color: #FFD700;
+            margin-right: 8px;
+            font-size: 16px;
+        }
 
         /* Phần tên cặp đôi ở giữa - trong cùng container */
         .couple-between-unified {
