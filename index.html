@@ -1169,6 +1169,14 @@
 
             // Hiệu ứng mở cửa khi trang tải
             setTimeout(() => {
+				const music = document.getElementById('bgMusic');
+				music.volume = 0.5;
+				music.play().catch(() => {});
+				document.addEventListener('click', () => {
+				  if (music.paused) {
+					music.play();
+				  }
+				}, { once: true });
                 document.getElementById('doorContainer').classList.add('door-open');
                 
                 // Hiển thị nội dung chính sau khi cửa mở
@@ -1291,5 +1299,9 @@
             }
         });
     </script>
+<audio id="bgMusic" loop>
+  <source src="cuoi-nhau-di.mp3" type="audio/mpeg">
+</audio>
+
 </body>
 </html>
