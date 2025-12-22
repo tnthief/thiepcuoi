@@ -1535,6 +1535,38 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(nextSlide, 5000);
 });
 </script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const closeBtn = document.querySelector('.lightbox-close');
+
+    document.querySelectorAll('.slides img').forEach(img => {
+        img.style.cursor = 'zoom-in';
+        img.addEventListener('click', () => {
+            lightboxImg.src = img.src;
+            lightbox.classList.add('show');
+        });
+    });
+
+    closeBtn.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+    });
+
+    function closeLightbox() {
+        lightbox.classList.remove('show');
+        setTimeout(() => {
+            lightboxImg.src = '';
+        }, 300);
+    }
+
+    // ESC để đóng
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeLightbox();
+    });
+});
+</script>
 
 <audio id="bgMusic" loop>
   <source src="cuoi-nhau-di.mp3" type="audio/mpeg">
