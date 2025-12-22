@@ -1403,77 +1403,97 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-    const slides = document.querySelector('.slides');
-    const images = document.querySelectorAll('.slides img');
-    const prevBtn = document.querySelector('.prev');
-    const nextBtn = document.querySelector('.next');
-    const dotsContainer = document.querySelector('.dots');
-
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightboxImg');
-    const lightboxClose = document.querySelector('.lightbox-close');
+    const closeBtn = document.querySelector('.lightbox-close');
+    const images = Array.from(document.querySelectorAll('.slides img'));
 
-    let index = 0;
-    const total = images.length;
+    let currentIndex = 0;
+    let startX = 0;
+    let endX = 0;
+    let touchMoved = false;
 
-    /* ===== Slider ===== */
-    images.forEach((_, i) => {
-        const dot = document.createElement('span');
-        if (i === 0) dot.classList.add('active');
-        dot.addEventListener('click', () => goToSlide(i));
-        dotsContainer.appendChild(dot);
-    });
-
-    const dots = document.querySelectorAll('.dots span');
-
-    function updateSlider() {
-        slides.style.transform = `translateX(-${index * 100}%)`;
-        dots.forEach(dot => dot.classList.remove('active'));
-        dots[index].classList.add('active');
-    }
-
-    function goToSlide(i) {
-        index = i;
-        updateSlider();
-    }
-
-    function nextSlide() {
-        index = (index + 1) % total;
-        updateSlider();
-    }
-
-    function prevSlide() {
-        index = (index - 1 + total) % total;
-        updateSlider();
-    }
-
-    nextBtn.addEventListener('click', nextSlide);
-    prevBtn.addEventListener('click', prevSlide);
-    setInterval(nextSlide, 5000);
-
-    /* ===== Lightbox ===== */
-    images.forEach(img => {
+    // Mở lightbox
+    images.forEach((img, index) => {
         img.style.cursor = 'zoom-in';
-        img.addEventListener('click', () => {
-            lightboxImg.src = img.src;
-            lightbox.classList.add('show');
+
+        // PC click
+        img.addEventListener('click', () => openLightbox(index));
+
+        // Mobile touch
+        img.addEventListener('touchstart', () => {
+            touchMoved = false;
+        }, { passive: true });
+
+        img.addEventListener('touchmove', () => {
+            touchMoved = true;
+        }, { passive: true });
+
+        img.addEventListener('touchend', (e) => {
+            if (!touchMoved) {
+                e.preventDefault();
+                openLightbox(index);
+            }
         });
     });
 
-    function closeLightbox() {
-        lightbox.classList.remove('show');
+    function openLightbox(index) {
+        currentIndex = index;
+        lightboxImg.src = images[currentIndex].src;
+        lightbox.classList.add('show');
+        document.body.style.overflow = 'hidden';
     }
 
-    lightboxClose.addEventListener('click', closeLightbox);
-    lightbox.addEventListener('click', e => {
+    function closeLightbox() {
+        lightbox.classList.remove('show');
+        document.body.style.overflow = '';
+    }
+
+    function showNext() {
+        currentIndex = (currentIndex + 1) % images.length;
+        lightboxImg.src = images[currentIndex].src;
+    }
+
+    function showPrev() {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        lightboxImg.src = images[currentIndex].src;
+    }
+
+    // Nút đóng
+    closeBtn.addEventListener('click', closeLightbox);
+
+    // Click nền để đóng
+    lightbox.addEventListener('click', (e) => {
         if (e.target === lightbox) closeLightbox();
     });
 
-    document.addEventListener('keydown', e => {
+    // Bàn phím PC
+    document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('show')) return;
         if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowRight') showNext();
+        if (e.key === 'ArrowLeft') showPrev();
     });
+
+    // Vuốt mobile
+    lightboxImg.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+    }, { passive: true });
+
+    lightboxImg.addEventListener('touchend', (e) => {
+        endX = e.changedTouches[0].clientX;
+        handleSwipe();
+    });
+
+    function handleSwipe() {
+        const diff = startX - endX;
+        if (Math.abs(diff) > 50) {
+            diff > 0 ? showNext() : showPrev();
+        }
+    }
 });
 </script>
+
 
 <!-- Lightbox -->
 <div class="lightbox" id="lightbox">
