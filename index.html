@@ -965,6 +965,117 @@
                 max-width: 900px;
             }
         }
+		/* ===== Wedding Gallery Slider ===== */
+		.gallery-section {
+			margin: 70px 0 50px;
+			text-align: center;
+		}
+
+		.gallery-title {
+			font-family: 'Playfair Display', serif;
+			font-size: 26px;
+			color: #8B0000;
+			margin-bottom: 30px;
+			position: relative;
+		}
+
+		.gallery-title::after {
+			content: '';
+			width: 120px;
+			height: 3px;
+			background: linear-gradient(to right, #FFD700, #DC143C);
+			display: block;
+			margin: 12px auto 0;
+			border-radius: 3px;
+		}
+
+		.gallery-slider {
+			position: relative;
+			max-width: 900px;
+			margin: 0 auto;
+			overflow: hidden;
+			border-radius: 18px;
+			box-shadow: 0 15px 35px rgba(220, 20, 60, 0.25);
+			background: #fff;
+		}
+
+		.slides {
+			display: flex;
+			transition: transform 0.6s ease;
+		}
+
+		.slides img {
+			width: 100%;
+			flex-shrink: 0;
+			object-fit: cover;
+		}
+
+		/* Nút điều hướng */
+		.gallery-slider .nav {
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+			background: rgba(139, 0, 0, 0.6);
+			color: #FFD700;
+			border: none;
+			font-size: 30px;
+			padding: 10px 16px;
+			cursor: pointer;
+			border-radius: 50%;
+			z-index: 5;
+			transition: all 0.3s ease;
+		}
+
+		.gallery-slider .nav:hover {
+			background: rgba(139, 0, 0, 0.85);
+			transform: translateY(-50%) scale(1.1);
+		}
+
+		.gallery-slider .prev {
+			left: 15px;
+		}
+
+		.gallery-slider .next {
+			right: 15px;
+		}
+
+		/* Dots */
+		.dots {
+			position: absolute;
+			bottom: 15px;
+			left: 50%;
+			transform: translateX(-50%);
+			display: flex;
+			gap: 8px;
+		}
+
+		.dots span {
+			width: 10px;
+			height: 10px;
+			background: rgba(255, 215, 0, 0.5);
+			border-radius: 50%;
+			cursor: pointer;
+			transition: all 0.3s ease;
+		}
+
+		.dots span.active {
+			background: #DC143C;
+			transform: scale(1.3);
+		}
+
+		/* Mobile tối ưu */
+		@media (max-width: 768px) {
+			.gallery-slider {
+				max-width: 100%;
+				border-radius: 14px;
+			}
+
+			.gallery-slider .nav {
+				font-size: 24px;
+				padding: 8px 12px;
+			}
+		}
+
     </style>
 </head>
 <body>
@@ -1078,7 +1189,7 @@
             <div class="event-details">
                 <div class="event-item">
                     <div class="event-icon">💒</div>
-                    <h3>Lễ Ăn Hỏi</h3>
+                    <h3>Lễ Thành Hôn</h3>
                     <p>Chủ Nhật, ngày 28 tháng 12 năm 2025</p>
                     <p class="time">8:00 AM</p>
                     <p>Tại tư gia nhà gái</p>
@@ -1098,6 +1209,32 @@
                 </a>
             </div>
         </div>
+		<!-- Wedding Gallery Slider -->
+		<section class="gallery-section fade-in">
+			<h2 class="gallery-title">Khoảnh Khắc Yêu Thương</h2>
+
+			<div class="gallery-slider">
+				<div class="slides">
+					<img src="1.jpg" alt="Wedding photo 1">
+					<img src="2.jpg" alt="Wedding photo 2">
+					<img src="3.jpg" alt="Wedding photo 3">
+					<img src="4.jpg" alt="Wedding photo 4">
+					<img src="5.jpg" alt="Wedding photo 5">
+					<img src="6.jpg" alt="Wedding photo 6">
+					<img src="7.jpg" alt="Wedding photo 7">
+					<img src="8.jpg" alt="Wedding photo 8">
+					<img src="9.jpg" alt="Wedding photo 9">
+					<img src="10.jpg" alt="Wedding photo 10">
+				</div>
+
+				<!-- Nút điều hướng -->
+				<button class="nav prev">&#10094;</button>
+				<button class="nav next">&#10095;</button>
+
+				<!-- Dots -->
+				<div class="dots"></div>
+			</div>
+		</section>
 
         <!-- Footer -->
         <div class="footer-text">
@@ -1302,6 +1439,55 @@
 <audio id="bgMusic" loop>
   <source src="cuoi-nhau-di.mp3" type="audio/mpeg">
 </audio>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const slides = document.querySelector('.slides');
+    const images = document.querySelectorAll('.slides img');
+    const prevBtn = document.querySelector('.prev');
+    const nextBtn = document.querySelector('.next');
+    const dotsContainer = document.querySelector('.dots');
+
+    let index = 0;
+    const total = images.length;
+
+    // Tạo dots
+    images.forEach((_, i) => {
+        const dot = document.createElement('span');
+        if (i === 0) dot.classList.add('active');
+        dot.addEventListener('click', () => goToSlide(i));
+        dotsContainer.appendChild(dot);
+    });
+
+    const dots = document.querySelectorAll('.dots span');
+
+    function updateSlider() {
+        slides.style.transform = `translateX(-${index * 100}%)`;
+        dots.forEach(dot => dot.classList.remove('active'));
+        dots[index].classList.add('active');
+    }
+
+    function goToSlide(i) {
+        index = i;
+        updateSlider();
+    }
+
+    function nextSlide() {
+        index = (index + 1) % total;
+        updateSlider();
+    }
+
+    function prevSlide() {
+        index = (index - 1 + total) % total;
+        updateSlider();
+    }
+
+    nextBtn.addEventListener('click', nextSlide);
+    prevBtn.addEventListener('click', prevSlide);
+
+    // Auto slide (5s)
+    setInterval(nextSlide, 5000);
+});
+</script>
 
 </body>
 </html>
