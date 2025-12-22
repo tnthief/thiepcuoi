@@ -1290,200 +1290,65 @@
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Tạo hoa rơi
-            function createFallingFlowers() {
-                const container = document.getElementById('fallingFlowers');
-                const flowers = ['❀', '❁', '✿', '🌸', '💮', '🏵️'];
-                
-                for (let i = 0; i < 12; i++) {
-                    const flower = document.createElement('div');
-                    flower.className = 'flower';
-                    flower.innerHTML = flowers[Math.floor(Math.random() * flowers.length)];
-                    
-                    // Vị trí ngẫu nhiên
-                    flower.style.left = Math.random() * 100 + 'vw';
-                    flower.style.fontSize = (Math.random() * 20 + 16) + 'px';
-                    flower.style.color = `hsl(${Math.random() * 60 + 320}, 70%, 65%)`;
-                    
-                    // Tốc độ rơi ngẫu nhiên
-                    const duration = Math.random() * 10 + 10;
-                    flower.style.animationDuration = `${duration}s`;
-                    flower.style.animationDelay = Math.random() * 5 + 's';
-                    
-                    container.appendChild(flower);
-                }
-            }
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const closeBtn = document.querySelector('.lightbox-close');
 
-            // Tạo biểu tượng cưới chạy khắp màn hình
-            function createWeddingIcons() {
-                const container = document.getElementById('weddingIcons');
-                const icons = [
-                    { class: 'groom-icon', symbol: '👨‍❤️‍👨' },
-                    { class: 'bride-icon', symbol: '👩‍❤️‍👩' },
-                    { class: 'groom-icon', symbol: '🤵' },
-                    { class: 'bride-icon', symbol: '👰' },
-                    { class: 'groom-icon', symbol: '💑' },
-                    { class: 'bride-icon', symbol: '❤️' },
-                    { class: 'groom-icon', symbol: '💍' },
-                    { class: 'bride-icon', symbol: '💒' }
-                ];
-                
-                for (let i = 0; i < 10; i++) {
-                    const icon = document.createElement('div');
-                    const iconType = icons[Math.floor(Math.random() * icons.length)];
-                    
-                    icon.className = `wedding-icon ${iconType.class}`;
-                    icon.innerHTML = iconType.symbol;
-                    
-                    // Vị trí ngẫu nhiên
-                    icon.style.left = Math.random() * 100 + 'vw';
-                    icon.style.top = Math.random() * 100 + 'vh';
-                    icon.style.fontSize = (Math.random() * 20 + 24) + 'px';
-                    icon.style.opacity = Math.random() * 0.3 + 0.1;
-                    
-                    // Tốc độ di chuyển ngẫu nhiên
-                    const duration = Math.random() * 20 + 20;
-                    icon.style.animationDuration = `${duration}s`;
-                    icon.style.animationDelay = Math.random() * 5 + 's';
-                    
-                    container.appendChild(icon);
-                }
-            }
+    let touchMoved = false;
 
-            // Hiệu ứng mở cửa khi trang tải
-            setTimeout(() => {
-				const music = document.getElementById('bgMusic');
-				music.volume = 0.5;
-				music.play().catch(() => {});
-				document.addEventListener('click', () => {
-				  if (music.paused) {
-					music.play();
-				  }
-				}, { once: true });
-                document.getElementById('doorContainer').classList.add('door-open');
-                
-                // Hiển thị nội dung chính sau khi cửa mở
-                setTimeout(() => {
-                    document.getElementById('mainContent').classList.add('show-content');
-                    
-                    // Tạo hiệu ứng hoa và biểu tượng
-                    createFallingFlowers();
-                    createWeddingIcons();
-                    
-                    // Ẩn cửa sau khi hiển thị nội dung
-                    setTimeout(() => {
-                        document.getElementById('doorContainer').style.display = 'none';
-                    }, 1000);
-                }, 2000);
-            }, 500);
+    document.querySelectorAll('.slides img').forEach(img => {
+        img.style.cursor = 'zoom-in';
 
-            // Hiệu ứng xuất hiện khi scroll
-            const fadeElements = document.querySelectorAll('.fade-in');
-            
-            const appearOnScroll = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('appear');
-                    }
-                });
-            }, { threshold: 0.1 });
-            
-            fadeElements.forEach(element => {
-                appearOnScroll.observe(element);
-            });
-
-            // Hàm cuộn đến phần tử
-            window.scrollToSection = function(sectionId) {
-                const element = document.getElementById(sectionId);
-                if (element) {
-                    element.scrollIntoView({ 
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            };
-
-            // Hiệu ứng hover cho các phần tử (chỉ trên desktop)
-            if (window.innerWidth >= 768) {
-                const familySides = document.querySelectorAll('.family-unified-side');
-                familySides.forEach(side => {
-                    side.addEventListener('mouseenter', function() {
-                        this.style.transform = 'translateY(-8px)';
-                    });
-                    
-                    side.addEventListener('mouseleave', function() {
-                        this.style.transform = 'translateY(0)';
-                    });
-                });
-
-                const eventItems = document.querySelectorAll('.event-item');
-                eventItems.forEach(item => {
-                    item.addEventListener('mouseenter', function() {
-                        this.style.transform = 'translateY(-8px)';
-                    });
-                    
-                    item.addEventListener('mouseleave', function() {
-                        this.style.transform = 'translateY(0)';
-                    });
-                });
-
-                const names = document.querySelectorAll('.name');
-                names.forEach(name => {
-                    name.addEventListener('mouseenter', function() {
-                        this.style.color = '#DC143C';
-                        this.style.textShadow = '0 0 15px rgba(255, 215, 0, 0.5)';
-                    });
-                    
-                    name.addEventListener('mouseleave', function() {
-                        this.style.color = '#8B0000';
-                        this.style.textShadow = '2px 2px 4px rgba(0, 0, 0, 0.1)';
-                    });
-                });
-            }
-
-            // Thêm hiệu ứng cho nút cuộn trên mobile
-            const scrollDownButtons = document.querySelectorAll('.scroll-down i');
-            scrollDownButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    this.style.transform = 'scale(0.9)';
-                    setTimeout(() => {
-                        this.style.transform = 'scale(1)';
-                    }, 200);
-                });
-                
-                button.addEventListener('touchstart', function() {
-                    this.style.transform = 'scale(0.9)';
-                });
-                
-                button.addEventListener('touchend', function() {
-                    this.style.transform = 'scale(1)';
-                });
-            });
-
-            // Tối ưu cho touch devices
-            document.body.addEventListener('touchstart', function() {}, {passive: true});
+        // PC click
+        img.addEventListener('click', () => {
+            openLightbox(img.src);
         });
 
-        // Tối ưu hiệu suất trên mobile
-        window.addEventListener('load', function() {
-            // Giảm số lượng hiệu ứng trên mobile
-            if (window.innerWidth < 768) {
-                const flowers = document.querySelectorAll('.flower');
-                const icons = document.querySelectorAll('.wedding-icon');
-                
-                // Giảm số lượng hoa và biểu tượng trên mobile
-                for (let i = 8; i < flowers.length; i++) {
-                    flowers[i].style.display = 'none';
-                }
-                
-                for (let i = 6; i < icons.length; i++) {
-                    icons[i].style.display = 'none';
-                }
+        // Mobile touch
+        img.addEventListener('touchstart', () => {
+            touchMoved = false;
+        }, { passive: true });
+
+        img.addEventListener('touchmove', () => {
+            touchMoved = true;
+        }, { passive: true });
+
+        img.addEventListener('touchend', (e) => {
+            if (!touchMoved) {
+                e.preventDefault();
+                openLightbox(img.src);
             }
         });
-    </script>
+    });
+
+    function openLightbox(src) {
+        lightboxImg.src = src;
+        lightbox.classList.add('show');
+        document.body.style.overflow = 'hidden'; // khóa scroll
+    }
+
+    function closeLightbox() {
+        lightbox.classList.remove('show');
+        document.body.style.overflow = '';
+        setTimeout(() => {
+            lightboxImg.src = '';
+        }, 300);
+    }
+
+    closeBtn.addEventListener('click', closeLightbox);
+
+    lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeLightbox();
+    });
+});
+</script>
+
 <audio id="bgMusic" loop>
   <source src="cuoi-nhau-di.mp3" type="audio/mpeg">
 </audio>
