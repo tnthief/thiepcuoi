@@ -1075,6 +1075,53 @@
 				padding: 8px 12px;
 			}
 		}
+		/* ===== Lightbox ===== */
+		.lightbox {
+			position: fixed;
+			inset: 0;
+			background: rgba(0, 0, 0, 0.85);
+			display: none;
+			justify-content: center;
+			align-items: center;
+			z-index: 2000;
+			animation: fadeIn 0.3s ease;
+		}
+
+		.lightbox.show {
+			display: flex;
+		}
+
+		.lightbox-img {
+			max-width: 92%;
+			max-height: 92%;
+			border-radius: 12px;
+			box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+			animation: zoomIn 0.3s ease;
+		}
+
+		.lightbox-close {
+			position: absolute;
+			top: 20px;
+			right: 30px;
+			font-size: 36px;
+			color: #FFD700;
+			cursor: pointer;
+			transition: transform 0.2s ease;
+		}
+
+		.lightbox-close:hover {
+			transform: scale(1.2);
+		}
+
+		@keyframes zoomIn {
+			from { transform: scale(0.9); opacity: 0; }
+			to { transform: scale(1); opacity: 1; }
+		}
+
+		@keyframes fadeIn {
+			from { opacity: 0; }
+			to { opacity: 1; }
+		}
 
     </style>
 </head>
@@ -1201,7 +1248,9 @@
                     <p>Chủ Nhật, ngày 30 tháng 12 năm 2025</p>
                     <p class="time">14:00</p>
                     <p>Tại: Minh Dương Place</p>
-				</div>
+                </div>
+            
+            
         </div>
 		<div style="text-align: center; margin-top: 40px;">
                 <a href="https://www.google.com/maps/place/Minh+D%C6%B0%C6%A1ng+Palace/data=!4m2!3m1!1s0x0:0x89e7c8392bd57d6c?sa=X&ved=1t:2428&ictx=111" target="_blank" class="action-btn">
@@ -1487,6 +1536,85 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(nextSlide, 5000);
 });
 </script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const slides = document.querySelector('.slides');
+    const images = document.querySelectorAll('.slides img');
+    const prevBtn = document.querySelector('.prev');
+    const nextBtn = document.querySelector('.next');
+    const dotsContainer = document.querySelector('.dots');
+
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const lightboxClose = document.querySelector('.lightbox-close');
+
+    let index = 0;
+    const total = images.length;
+
+    /* ===== Slider ===== */
+    images.forEach((_, i) => {
+        const dot = document.createElement('span');
+        if (i === 0) dot.classList.add('active');
+        dot.addEventListener('click', () => goToSlide(i));
+        dotsContainer.appendChild(dot);
+    });
+
+    const dots = document.querySelectorAll('.dots span');
+
+    function updateSlider() {
+        slides.style.transform = `translateX(-${index * 100}%)`;
+        dots.forEach(dot => dot.classList.remove('active'));
+        dots[index].classList.add('active');
+    }
+
+    function goToSlide(i) {
+        index = i;
+        updateSlider();
+    }
+
+    function nextSlide() {
+        index = (index + 1) % total;
+        updateSlider();
+    }
+
+    function prevSlide() {
+        index = (index - 1 + total) % total;
+        updateSlider();
+    }
+
+    nextBtn.addEventListener('click', nextSlide);
+    prevBtn.addEventListener('click', prevSlide);
+    setInterval(nextSlide, 5000);
+
+    /* ===== Lightbox ===== */
+    images.forEach(img => {
+        img.style.cursor = 'zoom-in';
+        img.addEventListener('click', () => {
+            lightboxImg.src = img.src;
+            lightbox.classList.add('show');
+        });
+    });
+
+    function closeLightbox() {
+        lightbox.classList.remove('show');
+    }
+
+    lightboxClose.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', e => {
+        if (e.target === lightbox) closeLightbox();
+    });
+
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closeLightbox();
+    });
+});
+</script>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+    <span class="lightbox-close">&times;</span>
+    <img class="lightbox-img" id="lightboxImg">
+</div>
 
 </body>
 </html>
