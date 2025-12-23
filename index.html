@@ -1355,31 +1355,45 @@
             }
 
             // Hiệu ứng mở cửa khi trang tải
-            setTimeout(() => {
-				const music = document.getElementById('bgMusic');
-				music.volume = 0.5;
-				music.play().catch(() => {});
-				document.addEventListener('click', () => {
-				  if (music.paused) {
-					music.play();
-				  }
-				}, { once: true });
-                document.getElementById('doorContainer').classList.add('door-open');
-                
-                // Hiển thị nội dung chính sau khi cửa mở
-                setTimeout(() => {
-                    document.getElementById('mainContent').classList.add('show-content');
-                    
-                    // Tạo hiệu ứng hoa và biểu tượng
-                    createFallingFlowers();
-                    createWeddingIcons();
-                    
-                    // Ẩn cửa sau khi hiển thị nội dung
-                    setTimeout(() => {
-                        document.getElementById('doorContainer').style.display = 'none';
-                    }, 1000);
-                }, 2000);
-            }, 500);
+            // Trong phần hiệu ứng mở cửa khi trang tải
+			setTimeout(() => {
+				// PHÁT NHẠC KHI CỬA MỞ
+				const bgMusic = document.getElementById('bgMusic');
+				if (bgMusic) {
+					bgMusic.volume = 0.5; // Điều chỉnh âm lượng (0.0 đến 1.0)
+					
+					// Thử phát nhạc, nếu bị chặn thì đợi tương tác của người dùng
+					const playPromise = bgMusic.play();
+					
+					if (playPromise !== undefined) {
+						playPromise.catch(error => {
+							console.log("Tự động phát nhạc bị chặn, đợi tương tác người dùng...");
+							// Thêm sự kiện click để phát nhạc khi người dùng tương tác
+							document.addEventListener('click', function playMusicOnClick() {
+								bgMusic.play();
+								document.removeEventListener('click', playMusicOnClick);
+							}, { once: true });
+						});
+					}
+				}
+				
+				// Mở cửa
+				document.getElementById('doorContainer').classList.add('door-open');
+				
+				// Hiển thị nội dung chính sau khi cửa mở
+				setTimeout(() => {
+					document.getElementById('mainContent').classList.add('show-content');
+					
+					// Tạo hiệu ứng hoa và biểu tượng
+					createFallingFlowers();
+					createWeddingIcons();
+					
+					// Ẩn cửa sau khi hiển thị nội dung
+					setTimeout(() => {
+						document.getElementById('doorContainer').style.display = 'none';
+					}, 1000);
+				}, 2000);
+			}, 500);
 
             // Hiệu ứng xuất hiện khi scroll
             const fadeElements = document.querySelectorAll('.fade-in');
